@@ -84,12 +84,64 @@ def add_new_tile(board):
 
 
 
-if __name__ == "__main__":
-    board = np.array([[2, 2, 4, 0], [8, 8, 0, 2], [2, 4, 0, 4], [0, 4, 0, 2]])
+
+
+# function for moving up, rotate board counter-clockwise once, slide and merge to the left, rotate it back
+def player_move_up(board):
+    board = np.rot90(board)
     board = slide_left(board)
-    print(board)
     board = merge(board)
+    board = np.rot90(board, -1)
+    return board
+
+
+# function for moving down, rotate board clockwise once, slide and merge to the left, rotate it back
+def player_move_down(board):
+    board = np.rot90(board, -1)
+    board = slide_left(board)
+    board = merge(board)
+    board = np.rot90(board)
+    return board
+
+
+# function for moving left, no rotation necessary
+def player_move_left(board):
+    board = slide_left(board)
+    board = merge(board)
+    return board
+
+
+# function for moving right, rotate board twice, slide and merge to the left, rotate it back
+def player_move_right(board):
+    board = np.rot90(board, 2)
+    board = slide_left(board)
+    board = merge(board)
+    board = np.rot90(board, -2)
+    return board
+
+
+
+# TODO - add checks to see if the move actually happens (if there is any space at all), do not complete the move and do not add a new tile if the move is impossible
+
+
+if __name__ == "__main__":
+    # board = np.array([[2, 2, 4, 0], [8, 8, 0, 2], [2, 4, 0, 4], [0, 4, 0, 2]])
+    # board = slide_left(board)
+    # print(board)
+    # board = merge(board)
+    # print(board)
+
+    # board = add_new_tile(board)
+    # print(board)
+
+    board = np.array([[2, 2, 4, 0], [2, 0, 4, 0], [0, 0, 2, 0], [0, 0, 2, 0]])
+    print(board)
+    board = player_move_up(board)
     print(board)
 
-    board = add_new_tile(board)
+    print("---")
+
+    board = np.array([[2, 2, 0, 0], [4, 0, 0, 0], [8, 2, 0, 2], [8, 0, 0, 2]])
+    print(board)
+    board = player_move_down(board)
     print(board)
