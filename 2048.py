@@ -62,6 +62,25 @@ def merge(board):
 
 
 
+# function to add a new numbered tile on a random position
+# new tiles have an 80% chance of being a 2, and a 20% chance of being a 4
+
+def add_new_tile(board):
+    free_positions = []
+
+    for row_i in range(len(board)):
+        for col_i in range(len(board[row_i])):
+            if board[row_i][col_i] == 0:
+                free_positions.append((row_i, col_i))
+    
+    
+    new_tile_distribution = [4, 4, 2, 2, 2, 2, 2, 2, 2, 2]
+    new_tile_val = new_tile_distribution[np.random.randint(0, len(new_tile_distribution))]
+    new_tile_pos = free_positions[np.random.randint(0, len(free_positions))]
+
+    board[new_tile_pos[0]][new_tile_pos[1]] = new_tile_val
+
+    return board
 
 
 
@@ -70,4 +89,7 @@ if __name__ == "__main__":
     board = slide_left(board)
     print(board)
     board = merge(board)
+    print(board)
+
+    board = add_new_tile(board)
     print(board)
