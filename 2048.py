@@ -100,42 +100,42 @@ def add_new_tile(board):
 
 # function for moving up, rotate board counter-clockwise once, slide and merge to the left, rotate it back
 def player_move_up(board):
-    rotated_board = np.rot90(board)
-    slide_board, flag_slide_success = slide_left(rotated_board)
-    merge_board, flag_merge_success = merge(slide_board)
+    board = np.rot90(board)
+    board, flag_slide_success = slide_left(board)
+    board, flag_merge_success = merge(board)
     flag_move_success = flag_slide_success or flag_merge_success
 
-    original_board = np.rot90(merge_board, -1)
+    original_board = np.rot90(board, -1)
     return (original_board, flag_move_success)
 
 
 # function for moving down, rotate board clockwise once, slide and merge to the left, rotate it back
 def player_move_down(board):
-    rotated_board = np.rot90(board, -1)
-    slide_board, flag_slide_success = slide_left(rotated_board)
-    merge_board, flag_merge_success = merge(slide_board)
+    board = np.rot90(board, -1)
+    board, flag_slide_success = slide_left(board)
+    board, flag_merge_success = merge(board)
     flag_move_success = flag_slide_success or flag_merge_success
 
-    original_board = np.rot90(merge_board)
+    original_board = np.rot90(board)
     return (original_board, flag_move_success)
 
 
 # function for moving left, no rotation necessary
 def player_move_left(board):
-    slide_board, flag_slide_success = slide_left(board)
-    merge_board, flag_merge_success = merge(slide_board)
+    board, flag_slide_success = slide_left(board)
+    board, flag_merge_success = merge(board)
     flag_move_success = flag_slide_success or flag_merge_success
 
-    return (merge_board, flag_move_success)
+    return (board, flag_move_success)
 
 
 # function for moving right, rotate board twice, slide and merge to the left, rotate it back
 def player_move_right(board):
-    rotated_board = np.rot90(board, 2)
-    slide_board, flag_slide_success = slide_left(rotated_board)
-    merge_board, flag_merge_success = merge(slide_board)
+    board = np.rot90(board, 2)
+    board, flag_slide_success = slide_left(board)
+    board, flag_merge_success = merge(board)
     flag_move_success = flag_slide_success or flag_merge_success
-    original_board = np.rot90(merge_board, -2)
+    original_board = np.rot90(board, -2)
     return (original_board, flag_move_success)
 
 
