@@ -41,6 +41,7 @@ class Game(tk.Frame):
         self.cells = []
         self.build_board()
         self.redraw()
+        self.master.bind("<Key>", self.key_pressed)
         print("draw")
 
         self.mainloop()
@@ -88,5 +89,22 @@ class Game(tk.Frame):
                     self.cells[row_i][col_i].configure(text = "", bg = COLORS[0])
 
         self.update_idletasks()
+
+
+    def key_pressed(self, event):
+        key = repr(event.char)
+
+        key_moves = {
+            "'w'": boardFunctions.player_move_up,
+            "'a'": boardFunctions.player_move_left,
+            "'s'": boardFunctions.player_move_down,
+            "'d'": boardFunctions.player_move_right
+        }
+        if key in ["'w'", "'a'", "'s'", "'d'"]:
+            self.board, flag = key_moves[key](self.board)
+            if flag == True:
+                self.board = boardFunctions.add_new_tile(self.board)
+                self.redraw()
+
 
 game_grid = Game()
