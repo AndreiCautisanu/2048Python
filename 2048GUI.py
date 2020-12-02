@@ -4,7 +4,7 @@ import boardFunctions
 COLORS = {
     'bg_app': '#a6bdbb',
     'text': '#776e65',
-    0:    '#f67c5f',
+    0:    '#8eaba8',
     2:    '#eee4da',
     4:    '#ede0c8',
     8:    '#f2b179',
@@ -35,6 +35,8 @@ class Game(tk.Frame):
 
         self.grid()
         self.master.title('2048')
+        self.master.maxsize(650, 625)
+        self.master.minsize(650, 625)
 
         self.cells = []
         self.build_board()
@@ -43,6 +45,8 @@ class Game(tk.Frame):
 
         self.mainloop()
 
+
+    # function that builds the initial board cells and background
     def build_board(self):
 
         self.board = boardFunctions.init_board()
@@ -53,14 +57,26 @@ class Game(tk.Frame):
         for row_i in range(4):
             grid_row = []
             for col_i in range(4):
+
+                # make cell blocks
                 cell = tk.Frame(background, bg = COLORS[0], width = 100, height = 100)
-                cell.grid(row = row_i, column = col_i, padx = 10, pady = 10)
-                t = tk.Label(cell, text = "", bg = COLORS[0], justify = tk.CENTER, font = FONTS['L'], width = 5, height = 2)
-                t.grid()
-                grid_row.append(t)
+
+                # equal padding on all sides
+                cell.grid(
+                            row = row_i, column = col_i, 
+                            padx = (10, 5) if col_i == 0 else 5 if col_i != 3 else (5, 10), 
+                            pady = (10, 5) if row_i == 0 else 5 if row_i != 3 else (5, 10))
+
+                # add cell labels to hold the numbers and add them to the cell array to modify with the redraw function
+                cell_label = tk.Label(cell, text = "", bg = COLORS[0], justify = tk.CENTER, font = FONTS['L'], width = 4, height = 2)
+                cell_label.grid()
+                grid_row.append(cell_label)
             
             self.cells.append(grid_row)
 
+
+    # function to redraw the numbers on the board corresponding to the stored board matrix - go through all the cell labels and update them according to the corresponding
+    # value inside the board matrix
     def redraw(self):
         for row_i in range(4):
             for col_i in range(4):
