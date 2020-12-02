@@ -139,6 +139,45 @@ def player_move_right(board):
     return (original_board, flag_move_success)
 
 
+def player_move(board, direction):
+    if direction == 'w':
+        board = np.rot90(board)
+        board, flag_slide_success = slide_left(board)
+        board, flag_merge_success = merge(board)
+        flag_move_success = flag_slide_success or flag_merge_success
+
+        original_board = np.rot90(board, -1)
+        return (original_board, flag_move_success)
+
+    elif direction == 's':
+        board = np.rot90(board, -1)
+        board, flag_slide_success = slide_left(board)
+        board, flag_merge_success = merge(board)
+        flag_move_success = flag_slide_success or flag_merge_success
+
+        original_board = np.rot90(board)
+        return (original_board, flag_move_success)
+
+    elif direction == 'a':
+        board, flag_slide_success = slide_left(board)
+        board, flag_merge_success = merge(board)
+        flag_move_success = flag_slide_success or flag_merge_success
+
+        return (board, flag_move_success)
+
+    elif direction == 'd':
+        board = np.rot90(board, 2)
+        board, flag_slide_success = slide_left(board)
+        board, flag_merge_success = merge(board)
+        flag_move_success = flag_slide_success or flag_merge_success
+        original_board = np.rot90(board, -2)
+        return (original_board, flag_move_success)
+
+    else:
+        return (board, False)
+
+
+
 
 # TODO - add checks to see if the move actually happens (if there is any space at all), do not complete the move and do not add a new tile if the move is impossible
 

@@ -1,0 +1,76 @@
+import tkinter as tk
+import boardFunctions
+
+COLORS = {
+    'bg_app': '#a6bdbb',
+    'text': '#776e65',
+    0:    '#f67c5f',
+    2:    '#eee4da',
+    4:    '#ede0c8',
+    8:    '#f2b179',
+    16:   '#f59563',
+    32:   '#f675cf',
+    64:   '#f65e3b',
+    128:  '#edcf72',
+    256:  '#edcc61',
+    512:  '#edc850',
+    1024: '#edc53f',
+    2048: '#edc22e'
+}
+
+
+FONTS = {
+    '2XL': ('Helvetica', 72, 'bold'),
+    'XL':  ('Helvetica', 60, 'bold'),
+    'L':   ('Helvetica', 44, 'bold'),
+    'M':   ('Helvetica', 32, 'bold'),
+    'S':   ('Helvetica', 24, 'bold')
+}
+
+
+class Game(tk.Frame):
+    
+    def __init__(self):
+        tk.Frame.__init__(self)
+
+        self.grid()
+        self.master.title('2048')
+
+        self.cells = []
+        self.build_board()
+        self.redraw()
+        print("draw")
+
+        self.mainloop()
+
+    def build_board(self):
+
+        self.board = boardFunctions.init_board()
+
+        background = tk.Frame(self, bg = COLORS['bg_app'], width = 600, height = 600)
+        background.grid()
+
+        for row_i in range(4):
+            grid_row = []
+            for col_i in range(4):
+                cell = tk.Frame(background, bg = COLORS[0], width = 100, height = 100)
+                cell.grid(row = row_i, column = col_i, padx = 10, pady = 10)
+                t = tk.Label(cell, text = "", bg = COLORS[0], justify = tk.CENTER, font = FONTS['L'], width = 5, height = 2)
+                t.grid()
+                grid_row.append(t)
+            
+            self.cells.append(grid_row)
+
+    def redraw(self):
+        for row_i in range(4):
+            for col_i in range(4):
+                val = self.board[row_i][col_i]
+                
+                if val > 0:
+                    self.cells[row_i][col_i].configure(text = str(val), bg = COLORS[val], fg = COLORS['text'])
+                else:
+                    self.cells[row_i][col_i].configure(text = "", bg = COLORS[0])
+
+        self.update_idletasks()
+
+game_grid = Game()
