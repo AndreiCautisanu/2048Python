@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import numpy as np
 import boardFunctions
 
@@ -67,7 +68,8 @@ class Game(tk.Frame):
                 cell.grid(
                             row = row_i, column = col_i, 
                             padx = (10, 5) if col_i == 0 else 5 if col_i != 3 else (5, 10), 
-                            pady = (10, 5) if row_i == 0 else 5 if row_i != 3 else (5, 10))
+                            pady = (10, 5) if row_i == 0 else 5 if row_i != 3 else (5, 10)
+                )
 
                 # add cell labels to hold the numbers and add them to the cell array to modify with the redraw function
                 cell_label = tk.Label(cell, text = "", bg = COLORS[0], justify = tk.CENTER, font = FONTS['L'], width = 4, height = 2)
@@ -85,16 +87,16 @@ class Game(tk.Frame):
                 val = self.board[row_i][col_i]
                 
                 if val > 0:
-                    self.cells[row_i][col_i].configure(text = str(val), bg = COLORS[val], fg = COLORS['text'])
+                    self.cells[row_i][col_i].configure(text = str(val), bg = COLORS.get(val, '#000000'), fg = COLORS['text'])
                 else:
                     self.cells[row_i][col_i].configure(text = "", bg = COLORS[0])
 
-        self.update_idletasks()
+        
 
 
+    #function gets called on each key press event, manipulates the board if player presses WASD
     def key_pressed(self, event):
         key = repr(event.char)
-
         key_moves = {
             "'w'": self.player_move_up,
             "'a'": self.player_move_left,
@@ -108,11 +110,27 @@ class Game(tk.Frame):
                 self.redraw()
 
 
+        # check if the game is over
+        if self.gameWon():
+            response = messagebox.showinfo('You win!', 'Congratulations, you got 2048!')
+            if response == 'ok':
+                self.destroy()
+                self.quit()
+
+        if not self.movePossible():
+            response = messagebox.showinfo('You lose!', 'You can no longer make a legal move, you\'ve lost!')
+            if response == 'ok':
+                self.destroy()
+                self.quit()
+
+        self.update_idletasks()
+
+
 
 # BOARD MANIPULATION FUNCTIONS
 
 
-    # function that initializes and returns the starting board
+    # function that initializes the starting board
     def init_board(self):
         self.board = np.zeros((4,4), dtype=int)
 
@@ -245,11 +263,17 @@ class Game(tk.Frame):
 
     #check if there is any possible move
     def movePossible(self):
-        flag_up =    self.player_move_up()
-        flag_down =  self.player_move_down()
-        flag_left =  self.player_move_left()
-        flag_right = self.player_move_right()
+        if 0 in self.board:
+            return True
 
-        return flag_up == True or flag_down == True or flag_left == True or flag_right == True
+        for i in range(3):
+            for j in range(3):
+                if self.board[i][j] != 0 and (self.board[i][j] == self.board[i][j+1] or self.board[i][j] == self.board[i+1][j]):
+                    return True
+
+        return False
+
+    def gameWon(self):
+        return 2048 in self.board
 
 game_grid = Game()
