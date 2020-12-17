@@ -1,4 +1,5 @@
 import numpy as np
+from random import choices
 
 
 # function that initializes and returns the starting board
@@ -145,7 +146,7 @@ def movePossible(board):
     _, flag_left = player_move_left(board)
     _, flag_right = player_move_right(board)
 
-    return flag_up == True or flag_down == True or flag_left == true or flag_right == True
+    return flag_up == True or flag_down == True or flag_left == True or flag_right == True
 
 
 
@@ -162,23 +163,25 @@ if __name__ == "__main__":
     # board = add_new_tile(board)
     # print(board)
 
-    board = np.array([[2, 2, 4, 0], [2, 0, 4, 0], [0, 0, 2, 0], [0, 0, 2, 0]])
-    print(board)
-    board, flag = player_move_up(board)
-    print(board)
+    # board = np.array([[2, 2, 4, 0], [2, 0, 4, 0], [0, 0, 2, 0], [0, 0, 2, 0]])
+    # print(board)
+    # board, flag = player_move_up(board)
+    # print(board)
 
-    print("---")
+    # print("---")
 
-    board = np.array([[2, 2, 0, 0], [4, 0, 0, 0], [8, 2, 0, 2], [8, 0, 0, 2]])
-    print(board)
-    board, flag = player_move_down(board)
-    print(board)
+    # board = np.array([[2, 2, 0, 0], [4, 0, 0, 0], [8, 2, 0, 2], [8, 0, 0, 2]])
+    # print(board)
+    # board, flag = player_move_down(board)
+    # print(board)
 
-    print("---")
+    # print("---")
 
-    board = np.array([[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]])
-    print(board)
-    board, flag = player_move_left(board)
-    print(board)
-    print(flag)
+    # board = np.array([[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]])
+    # print(board)
+    # board, flag = player_move_left(board)
+    # print(board)
+    # print(flag)
 
+   arr = np.array([[0, 0, 0], [1, 2, 0], [0, 1, 4]])
+   print(np.argwhere(arr == 0)[2])

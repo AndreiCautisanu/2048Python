@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from random import choices
 import numpy as np
 import boardFunctions
 
@@ -197,19 +198,13 @@ class Game(tk.Frame):
 
 
     # function to add a new numbered tile on a random position
-    # new tiles have an 80% chance of being a 2, and a 20% chance of being a 4
-
     def add_new_tile(self):
-        free_positions = []
 
-        for row_i in range(len(self.board)):
-            for col_i in range(len(self.board[row_i])):
-                if self.board[row_i][col_i] == 0:
-                    free_positions.append((row_i, col_i))
-        
-        
-        new_tile_distribution = [4, 4, 2, 2, 2, 2, 2, 2, 2, 2]
-        new_tile_val = new_tile_distribution[np.random.randint(0, len(new_tile_distribution))]
+        # get all empty spaces in board matrix
+        free_positions = np.argwhere(self.board == 0)
+
+        # new tile has an 80% chance of being a 2 and a 20% chance of being a 4
+        new_tile_val = choices([2, 4], [0.8, 0.2])[0]
         new_tile_pos = free_positions[np.random.randint(0, len(free_positions))]
 
         self.board[new_tile_pos[0]][new_tile_pos[1]] = new_tile_val
