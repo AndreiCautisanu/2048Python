@@ -21,15 +21,7 @@ COLORS = {
     2048: '#edc22e'
 }
 
-
-FONTS = {
-    '2XL': ('Helvetica', 72, 'bold'),
-    'XL':  ('Helvetica', 60, 'bold'),
-    'L':   ('Helvetica', 44, 'bold'),
-    'M':   ('Helvetica', 32, 'bold'),
-    'S':   ('Helvetica', 24, 'bold')
-}
-
+FONT = ('Helvetica', 44, 'bold')
 
 class Game(tk.Frame):
     
@@ -41,7 +33,7 @@ class Game(tk.Frame):
         self.master.maxsize(650, 625)
         self.master.minsize(650, 625)
 
-        self.cells = []
+        self.cells = []  # holds the tk labels inside the board matrix tiles
         self.build_board()
         self.redraw()
         self.master.bind("<Key>", self.key_pressed)
@@ -73,7 +65,7 @@ class Game(tk.Frame):
                 )
 
                 # add cell labels to hold the numbers and add them to the cell array to modify with the redraw function
-                cell_label = tk.Label(cell, text = "", bg = COLORS[0], justify = tk.CENTER, font = FONTS['L'], width = 4, height = 2)
+                cell_label = tk.Label(cell, text = "", bg = COLORS[0], justify = tk.CENTER, font = FONT, width = 4, height = 2)
                 cell_label.grid()
                 grid_row.append(cell_label)
             
@@ -138,6 +130,7 @@ class Game(tk.Frame):
         rng = np.random.default_rng()
         twos_placed = 0
 
+        # game starts with two 2 tiles on random positions
         while twos_placed < 2:
             two_coords = rng.integers(0, 4, 2)
             if self.board[two_coords[0]][two_coords[1]] == 0:
@@ -164,7 +157,7 @@ class Game(tk.Frame):
             new_board[i] = new_row
 
             compare = row == new_row
-            rows_equal = compare.all()
+            rows_equal = compare.all()                          # this checks if the original row is equal to the new row
 
             if not rows_equal:
                 flag = True                                     # new row different from original row, so slide was possible
@@ -186,12 +179,12 @@ class Game(tk.Frame):
         for row_i in range(4):
             for col_i in range(3):
                 if new_board[row_i][col_i] == new_board[row_i][col_i + 1] and new_board[row_i][col_i] != 0:
-                    new_board[row_i][col_i] *= 2
-                    new_board[row_i][col_i + 1] = 0
+                    new_board[row_i][col_i] *= 2                # double the leftmost square in the equal pair
+                    new_board[row_i][col_i + 1] = 0             # remove the other one
                     flag = True
 
         self.board = new_board
-        _ = self.slide_board_left() # slide again to cover empty spaces
+        _ = self.slide_board_left() # slide everything to the left again to cover empty spaces
 
         return flag
 
@@ -256,7 +249,7 @@ class Game(tk.Frame):
         return flag_move_success
 
 
-    #check if there is any possible move
+    #check if there is any possible move by checking if there are any adjacent same-numbered tile pairs or if there is any single tile left
     def movePossible(self):
         if 0 in self.board:
             return True
